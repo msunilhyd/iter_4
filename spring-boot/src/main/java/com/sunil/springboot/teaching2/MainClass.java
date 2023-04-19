@@ -1,7 +1,6 @@
 package com.sunil.springboot.teaching2;
 
 public class MainClass {
-
     public static void main(String[] args) {
 
         Employee e1 = new Employee(1234, "sunil");

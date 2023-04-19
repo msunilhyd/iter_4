@@ -50,4 +50,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         return departmentRepository.save(deptDB);
     }
+
+    @Override
+    public Department fetchDepartmentByName(String deptName) {
+        return null;
+    }
 }

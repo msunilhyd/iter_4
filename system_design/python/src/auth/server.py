@@ -7,9 +7,9 @@ mysql = MySQL(server)
 
 #config
 server.config["MYSQL_HOST"] = "localhost"
-server.config["MYSQL_USER"] = "root"
-server.config["MYSQL_PASSWORD"] = "kumar"
-server.config["MYSQL_DB"] = "myDB"
+server.config["MYSQL_USER"] = "auth_user"
+server.config["MYSQL_PASSWORD"] = "Auth123"
+server.config["MYSQL_DB"] = "auth"
 server.config["MYSQL_PORT"] = 3306
 
 @server.route("/login", methods=["POST"])
@@ -36,6 +36,24 @@ def login():
     else:
         return "invalid credentials", 401
 
+
+@server.route("/validate", methods=["POST"])
+def validate():
+    encoded_jwt = request.headers["Authorization"]
+
+    if not encoded_jwt:
+        return "missing credentials", 401
+
+    encoded_jwt = encoded_jwt.split(" ")[1]
+
+    try:
+        decoded = jwt.decode(
+            encoded_jwt, os.environ.get("JWT_SECRET"), algorithm=["HS256"]
+        )
+    except:
+        return "not authorized", 403
+
+    return decoded, 200
 
 def createJWT(username, secret, authz):
     return jwt.encode(
